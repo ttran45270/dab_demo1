@@ -1,4 +1,15 @@
 # Databricks notebook source
+# /// script
+# [tool.databricks.environment]
+# environment_version = "6"
+# ///
+
+
+# COMMAND ----------
+
+
+
+# COMMAND ----------
 
 data = [
     (1001, "Washington DC", "2026-10-01", "Released"),
@@ -14,6 +25,6 @@ columns = [
     "status"
 ]
 
-df = spark.createDataFrame(data, columns)
+bronze_df = spark.createDataFrame(data, columns)
 
-display(df)
+display(bronze_df)
