@@ -1,0 +1,10 @@
+
+YAML
+
+bundle:
+name: ice_dab_demo
+
+targets:
+dev:
+  mode: development
+  default: true
