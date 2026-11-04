@@ -1,10 +1,53 @@
 
-YAML
+# YAML
 
 bundle:
-name: ice_dab_demo
+  name: temp-ice-dab-demo
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Target Unity Catalog catalog
+    # default: dev_catalog
+
+  schema:
+    description: Target schema
+    # default: demo
 
 targets:
-dev:
-  mode: development
-  default: true
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://dhs-ice-elaine-ero-pr.cloud.databricks.us
+    variables:
+      catalog: uip_eid_uc
+      schema: ero_reporting_gold_eofy2026
+
+  prod:
+    mode: production
+    variables:
+      catalog: uip_eid_uc
+      schema: ero_reporting_gold_eofy2026
+    workspace:
+      host: https://dhs-ice-elaine-ero-pr.cloud.databricks.us
+      root_path: /Workspace/Users/thong.q.tran@associates.ice.dhs.gov/temp2
+    
+    permissions:
+    - user_name: thong.q.tran@associates.ice.dhs.gov
+      level: CAN_MANAGE
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,89 @@
+
+
+
+resources:
+  jobs:
+    arrests_data_pipeline:
+      name: arrests-pipeline-${bundle.target}
+      description: Bronze Silver Gold ETL demo
+
+      # Job parameters
+      parameters:
+        - name: catalog
+          default: ${var.catalog}
+        - name: schema
+          default: ${var.schema}
+        - name: processing_date
+          default: "2026-11-03"
+        # - name: load_mode
+        #   default: incremental
+
+      # Serverless Python environment
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "2"
+            dependencies: []
+
+      # Job settings
+      max_concurrent_runs: 1
+      timeout_seconds: 7200
+
+      tags:
+        project: dab-demo
+        pipeline: bronze-silver-gold
+        owner_team: data-engineering
+
+      # Scheduled daily at 8 AM Eastern
+      schedule:
+        quartz_cron_expression: "0 0 8 * * ?"
+        timezone_id: America/New_York
+        pause_status: PAUSED
+
+      # Tasks execute in dependency order
+      tasks:
+
+        # TASK 1: BRONZE
+        - task_key: bronze
+          description: Ingest source data
+          environment_key: default
+          spark_python_task:
+            python_file: ../src/bronze_arrest_360.ipynb
+            parameters:
+              - "--catalog={{job.parameters.catalog}}"
+              - "--schema={{job.parameters.schema}}"
+              - "--date={{job.parameters.processing_date}}"
+              - "--mode={{job.parameters.load_mode}}"
+          max_retries: 2
+          min_retry_interval_millis: 60000
+          timeout_seconds: 1800
+
+        # TASK 2: SILVER
+        - task_key: silver
+          description: Clean and transform data
+          depends_on:
+            - task_key: bronze
+          environment_key: default
+          spark_python_task:
+            python_file: ../src/silver.py
+            parameters:
+              - "--catalog={{job.parameters.catalog}}"
+              - "--schema={{job.parameters.schema}}"
+              - "--date={{job.parameters.processing_date}}"
+          max_retries: 2
+          timeout_seconds: 1800
+
+        # TASK 3: GOLD
+        - task_key: gold
+          description: Aggregate reporting data
+          depends_on:
+            - task_key: silver
+          environment_key: default
+          spark_python_task:
+            python_file: ../src/gold.py
+            parameters:
+              - "--catalog={{job.parameters.catalog}}"
+              - "--schema={{job.parameters.schema}}"
+              - "--date={{job.parameters.processing_date}}"
+          max_retries: 1
+          timeout_seconds: 1800
