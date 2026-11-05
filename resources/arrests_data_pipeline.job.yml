@@ -40,22 +40,26 @@ resources:
         timezone_id: America/New_York
         pause_status: PAUSED
 
-      # Tasks execute in dependency order
       tasks:
-        # TASK 1: BRONZE
-        - task_key: bronze
-          existing_cluster_id: "0923-143453-x4aruplw"
-          description: Ingest source data
+        - task_key: bronze_arrest_360
           spark_python_task:
             python_file: ../src/bronze_arrest_360.py
             parameters:
-              - "--catalog={{job.parameters.catalog}}"
-              - "--schema={{job.parameters.schema}}"
-              - "--date={{job.parameters.processing_date}}"
-              - "--mode={{job.parameters.load_mode}}"
+              - --catalog={{job.parameters.catalog}}
+              - --schema={{job.parameters.schema}}
+              - --date={{job.parameters.processing_date}}
+              - --mode={{job.parameters.load_mode}}
+          existing_cluster_id: 0923-143453-x4aruplw
           max_retries: 2
           min_retry_interval_millis: 60000
           timeout_seconds: 1800
+          description: Ingest source data
+
+        - task_key: transaction_create_ft2
+          spark_python_task:
+            python_file: ../src/calculate_arrest_360.py
+          environment_key: default
+      
 
         # TASK 2: SILVER
         # - task_key: silver
