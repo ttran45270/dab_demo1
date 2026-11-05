@@ -15,8 +15,8 @@ resources:
           default: ${var.schema}
         - name: processing_date
           default: "2026-11-03"
-        # - name: load_mode
-        #   default: incremental
+        - name: load_mode
+          default: incremental
 
       # Serverless Python environment
       environments:
@@ -42,13 +42,12 @@ resources:
 
       # Tasks execute in dependency order
       tasks:
-
         # TASK 1: BRONZE
         - task_key: bronze
+          existing_cluster_id: "0923-143453-x4aruplw"
           description: Ingest source data
-          environment_key: default
           spark_python_task:
-            python_file: ../src/bronze_arrest_360.ipynb
+            python_file: ../src/bronze_arrest_360.py
             parameters:
               - "--catalog={{job.parameters.catalog}}"
               - "--schema={{job.parameters.schema}}"
@@ -59,31 +58,31 @@ resources:
           timeout_seconds: 1800
 
         # TASK 2: SILVER
-        - task_key: silver
-          description: Clean and transform data
-          depends_on:
-            - task_key: bronze
-          environment_key: default
-          spark_python_task:
-            python_file: ../src/silver.py
-            parameters:
-              - "--catalog={{job.parameters.catalog}}"
-              - "--schema={{job.parameters.schema}}"
-              - "--date={{job.parameters.processing_date}}"
-          max_retries: 2
-          timeout_seconds: 1800
+        # - task_key: silver
+        #   description: Clean and transform data
+        #   depends_on:
+        #     - task_key: bronze
+        #   environment_key: default
+        #   spark_python_task:
+        #     python_file: ../src/silver.py
+        #     parameters:
+        #       - "--catalog={{job.parameters.catalog}}"
+        #       - "--schema={{job.parameters.schema}}"
+        #       - "--date={{job.parameters.processing_date}}"
+        #   max_retries: 2
+        #   timeout_seconds: 1800
 
-        # TASK 3: GOLD
-        - task_key: gold
-          description: Aggregate reporting data
-          depends_on:
-            - task_key: silver
-          environment_key: default
-          spark_python_task:
-            python_file: ../src/gold.py
-            parameters:
-              - "--catalog={{job.parameters.catalog}}"
-              - "--schema={{job.parameters.schema}}"
-              - "--date={{job.parameters.processing_date}}"
-          max_retries: 1
-          timeout_seconds: 1800
+        # # TASK 3: GOLD
+        # - task_key: gold
+        #   description: Aggregate reporting data
+        #   depends_on:
+        #     - task_key: silver
+        #   environment_key: default
+        #   spark_python_task:
+        #     python_file: ../src/gold.py
+        #     parameters:
+        #       - "--catalog={{job.parameters.catalog}}"
+        #       - "--schema={{job.parameters.schema}}"
+        #       - "--date={{job.parameters.processing_date}}"
+        #   max_retries: 1
+        #   timeout_seconds: 1800

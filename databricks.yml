@@ -1,4 +1,3 @@
-
 # YAML
 
 bundle:
@@ -17,6 +16,7 @@ variables:
     # default: demo
 
 targets:
+
   dev:
     mode: development
     default: true
@@ -33,21 +33,9 @@ targets:
       schema: ero_reporting_gold_eofy2026
     workspace:
       host: https://dhs-ice-elaine-ero-pr.cloud.databricks.us
-      root_path: /Workspace/Users/thong.q.tran@associates.ice.dhs.gov/temp2
+      #root_path: /Workspace/Users/thong.q.tran@associates.ice.dhs.gov/temp2
     
     permissions:
     - user_name: thong.q.tran@associates.ice.dhs.gov
       level: CAN_MANAGE
-
-
-
-
-
-
-
-
-
-
-
-
 
