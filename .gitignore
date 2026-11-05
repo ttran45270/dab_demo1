@@ -1,0 +1,26 @@
+
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Databricks DAB
+.databricks/
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Temporary files
+*.log
+.DS_Store
+.vscode/
+
+
+#read file inside a folder, ignore all except 1
+scratch_folder/**
+!scratch_folder/README.md

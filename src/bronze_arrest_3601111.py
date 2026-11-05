@@ -3,7 +3,8 @@
 # [tool.databricks.environment]
 # environment_version = "6"
 # ///
-
+# MAGIC %sql
+# MAGIC use catalog uip_eid_uc;
 
 # COMMAND ----------
 
@@ -28,3 +29,8 @@ columns = [
 bronze_df = spark.createDataFrame(data, columns)
 
 display(bronze_df)
+
+# COMMAND ----------
+
+
+
