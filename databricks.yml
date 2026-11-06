@@ -18,12 +18,11 @@ variables:
 targets:
 
   dev:
-
+    mode: development
     presets:
       name_prefix: dev_
 
-    #mode: development
-    default: true
+    #default: true
     workspace:
       host: https://dhs-ice-elaine-ero-pr.cloud.databricks.us
     variables:
@@ -32,7 +31,7 @@ targets:
 
   prod:
     presets:
-      name_prefix: dev_
+      name_prefix: pro_
 
     mode: production
     variables:
@@ -40,8 +39,8 @@ targets:
       schema: ero_reporting_gold_eofy2026
     workspace:
       host: https://dhs-ice-elaine-ero-pr.cloud.databricks.us
-      #root_path: /Workspace/Users/thong.q.tran@associates.ice.dhs.gov/temp2
-    
+      root_path: /Workspace/Users/thong.q.tran@associates.ice.dhs.gov/.bundle/${bundle.name}/${bundle.target}
+
     permissions:
     - user_name: thong.q.tran@associates.ice.dhs.gov
       level: CAN_MANAGE
