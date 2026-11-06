@@ -19,6 +19,9 @@ targets:
 
   dev:
     mode: development
+    presets:
+      name_prefix: dev_
+
     #default: true
     workspace:
       host: https://dhs-ice-elaine-ero-pr.cloud.databricks.us
@@ -27,6 +30,9 @@ targets:
       schema: ero_reporting_gold_eofy2026
 
   prod:
+    presets:
+      name_prefix: pro_
+
     mode: production
     variables:
       catalog: uip_eid_uc
@@ -39,3 +45,4 @@ targets:
     - user_name: thong.q.tran@associates.ice.dhs.gov
       level: CAN_MANAGE
 
+#delete after test
