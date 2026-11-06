@@ -32,7 +32,7 @@ targets:
 
   prod:
     presets:
-      name_prefix: dev_
+      name_prefix: prod_
 
     mode: production
     variables:
