@@ -20,7 +20,7 @@ targets:
   dev:
     mode: development
     presets:
-      name_prefix: dev_
+      name_prefix: dev_${workspace.current_user.short_name}_
 
     #default: true
     workspace:
@@ -30,8 +30,11 @@ targets:
       schema: ero_reporting_gold_eofy2026
 
   prod:
+    # presets:
+    #   name_prefix: prod_
+
     presets:
-      name_prefix: prod_
+      name_prefix: prod_${workspace.current_user.short_name}_
 
     mode: production
     variables:
