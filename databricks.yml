@@ -31,7 +31,7 @@ targets:
 
   prod:
     presets:
-      name_prefix: pro_
+      name_prefix: prod_
 
     mode: production
     variables:
